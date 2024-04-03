@@ -10,5 +10,6 @@ pipeline {
             steps {
                 git 'https://github.com/gitgo23/maven-web-app.git'
             }
+        }
     }
 }
