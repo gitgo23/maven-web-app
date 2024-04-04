@@ -25,9 +25,25 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('sonarqube') {
-                        sh "${ScannerHome}/bin/sonar-scanner -Dsonar.projectKey=EcommerceApp -Dsonar.java.binaries=target/EcommerceApp/WEB-INF/classes"
+                        sh "${ScannerHome}/bin/sonar-scanner -Dsonar.projectKey=Maven-App"
                     }
                 }
+            }
+        }
+
+        stage('Deploy to Nexus') {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: '01-maven-web-app', 
+                classifier: '', 
+                file: 'target/maven-web-app.war', 
+                type: 'war']], 
+                credentialsId: 'NEXUS_CRED', 
+                groupId: 'in.ashokit', 
+                nexusUrl: '54.234.72.14:8081', 
+                nexusVersion: 'nexus3', 
+                protocol: 'http', 
+                repository: 'ashokit', 
+                version: '3.0-RELEASE'
             }
         }
 
