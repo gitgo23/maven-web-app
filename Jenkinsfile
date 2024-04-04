@@ -18,20 +18,19 @@ pipeline {
             }
         }
 
-        stage("SonarQube Analysis") {
+       stage('SonarQube Analysis') {
+            environment {
+                ScannerHome = tool 'Scanner-5'
+            }
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn sonar:sonar'
+                script {
+                    withSonarQubeEnv('sonarqube') {
+                        sh "${ScannerHome}/bin/sonar-scanner -Dsonar.projectKey=EcommerceApp -Dsonar.java.binaries=target/EcommerceApp/WEB-INF/classes"
+                    }
                 }
             }
         }
 
-        // stage("Quality Gate") {
-        //    steps {
-        //        timeout(time: 1, unit: 'HOURS') {
-        //            waitForQualityGate abortPipeline: true
-         //       }
-        //    }
-        //}
+    
     }
 }
